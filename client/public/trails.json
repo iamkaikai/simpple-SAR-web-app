@@ -1,0 +1,14 @@
+[
+    {
+      "timestamp": 123120241231,
+      "name": "Casey",
+      "date": "2023-05-01",
+      "phone": "919-111-1111",
+      "path": [
+        [-72.313, 43.659],
+        [-72.312, 43.660],
+        [-72.311, 43.668]
+      ],
+      "notes": "Casey didn't see anyone on the trail."
+    }
+]  

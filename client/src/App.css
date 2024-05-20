@@ -1,0 +1,106 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.btn-addPath{
+  width: 15rem;
+  height: 4rem;
+  position: absolute;
+  font-size: 0.9rem;
+  right: 0.8rem;
+  bottom: 2rem;
+  background-color: #00693e;
+  color: white;
+  border: none;
+  border-radius: 1rem;
+  font-weight: bold;
+}
+
+.btn-form-popup{
+  width: 15rem;
+  height: 4rem;
+  position: absolute;
+  font-size: 0.9rem;
+  right: 0.8rem;
+  bottom: 6.5rem;
+  background-color: #2e79a0;
+  color: white;
+  border: none;
+  border-radius: 1rem;
+  font-weight: bold;
+}
+
+.trail-form-popup form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: medium;
+  padding-bottom: 1rem;
+  font-size: small;
+}
+.trail-form-popup form input,
+.trail-form-popup form textarea {
+  display: block;
+  width: 95%;
+  text-align: center;
+  margin-top: 6px;
+  margin-bottom: 12px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.trail-form-popup{
+  width: 50vw;
+  min-width: 300px;
+  height: auto;
+  position: absolute;
+  left: 50vw;
+  top: 50vh;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 1rem;
+  filter: drop-shadow(0 0 3rem rgba(0, 0, 0, 0.3));
+  align-items: center;
+  padding: 1rem;
+}
+
+.form-field{
+  display: flex;
+  padding: 1rem;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
