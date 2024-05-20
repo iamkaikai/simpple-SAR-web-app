@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import './TrailMap.css';
 import TrailForm from './TrailForm';
-import { firestore } from './firebase'; // Import Firestore
+import { firestore, GeoPoint } from './firebase'; // Import Firestore
 import { collection, addDoc } from 'firebase/firestore';
 
-const TrailMap = ({ map, trails, isDrawingMode, onTrailSave, setIsDrawingMode}) => {
+const TrailMap = ({ map, trails, isDrawingMode, setIsDrawingMode}) => {
   const [drawTrail, setDrawTrail] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
@@ -26,6 +26,7 @@ const TrailMap = ({ map, trails, isDrawingMode, onTrailSave, setIsDrawingMode}) 
       if (!isDrawingMode) return
 
       const coords = [e.lngLat.lng, e.lngLat.lat];
+      console.log(coords)
       setDrawTrail(prevDrawTrail => {
         const updatedTrail = [...prevDrawTrail, coords];
         console.log(`DrawTrail Coordinates: ${JSON.stringify(updatedTrail)}`);
@@ -49,39 +50,41 @@ const TrailMap = ({ map, trails, isDrawingMode, onTrailSave, setIsDrawingMode}) 
 
     // Draw initial trails
     trails.forEach(trail => {
-      const coordinates = trail.path;
+      const geoPoints = trail.path.map(geoPoint => [geoPoint.longitude, geoPoint.latitude]);
+      
+        console.log('geoPoints:', geoPoints);
+        // Add trail path as a line
+        const line = {
+          'type': 'Feature',
+          'properties': {},
+          'geometry': {
+            'type': 'LineString',
+            'coordinates': geoPoints
+          }
+        };
+        console.log('Fetched trail.id:', trail.id);
+        map.addSource(`route-${trail.id}`, {
+          'type': 'geojson',
+          'data': line
+        });
 
-      // Add trail path as a line
-      const line = {
-        'type': 'Feature',
-        'properties': {},
-        'geometry': {
-          'type': 'LineString',
-          'coordinates': coordinates
-        }
-      };
-
-      map.addSource(`route-${trail.id}`, {
-        'type': 'geojson',
-        'data': line
+        map.addLayer({
+          'id': `route-${trail.id}`,
+          'type': 'line',
+          'source': `route-${trail.id}`,
+          'layout': {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          'paint': {
+            'line-color': '#4F96E6',
+            'line-width': 5
+          }
+        });
       });
+        
+  }, [map, trails]); // Add map and trails as dependencies
 
-      map.addLayer({
-        'id': `route-${trail.id}`,
-        'type': 'line',
-        'source': `route-${trail.id}`,
-        'layout': {
-          'line-join': 'round',
-          'line-cap': 'round'
-        },
-        'paint': {
-          'line-color': '#007cbf',
-          'line-width': 5
-        }
-      });
-    });
-
-  }, [map, trails]);
 
   const drawLine = (map, coordinates) => {
     // Remove existing draw line if it exists
@@ -116,7 +119,7 @@ const TrailMap = ({ map, trails, isDrawingMode, onTrailSave, setIsDrawingMode}) 
         'line-cap': 'round'
       },
       'paint': {
-        'line-color': '#007cbf',
+        'line-color': '#FF5F1F',
         'line-width': 5
       }
     });
@@ -125,15 +128,18 @@ const TrailMap = ({ map, trails, isDrawingMode, onTrailSave, setIsDrawingMode}) 
   const handleSave = async(trailData) => {
     console.log('Saved trail data:', trailData);
     // Save trail data to JSON file or server here
+    const geoPoints = drawTrail.map(coord => new GeoPoint(coord[1], coord[0]));
+
     try {
-      await addDoc(collection(firestore, 'trails'), trailData);
+      await addDoc(collection(firestore, 'trails'), {
+        ...trailData,
+        path: geoPoints
+      });
       console.log('Trail data successfully saved to Firestore!');
-      onTrailSave(trailData); // Pass the trail data to parent component for additional handling if needed
+      setDrawTrail([]); // Clear the draw trail
     } catch (error) {
       console.error('Error saving trail data to Firestore:', error);
     }
-
-    setDrawTrail([]);
     setShowForm(false);
     setIsDrawingMode(false); // Reset drawing mode
   };
@@ -142,10 +148,10 @@ const TrailMap = ({ map, trails, isDrawingMode, onTrailSave, setIsDrawingMode}) 
     <div>
       {isDrawingMode && (
         <button className='btn-form-popup' onClick={() => setShowForm(true)}>
-          Confirm Path
+          Save This Path
         </button>
       )}
-      {showForm && <TrailForm drawTrail={drawTrail} onSave={handleSave} setIsDrawingMode={setIsDrawingMode}/>}
+      {showForm && <TrailForm drawTrail={drawTrail} onSave={handleSave} setIsDrawingMode={setIsDrawingMode} setDrawTrail={setDrawTrail} setShowForm={setShowForm}/>}
     </div>
   );
 };

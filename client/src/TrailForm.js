@@ -1,25 +1,35 @@
 import React, { useState } from 'react';
 
-const TrailForm = ({ drawTrail, onSave, setIsDrawingMode}) => {
+const TrailForm = ({ drawTrail, onSave, setIsDrawingMode, setDrawTrail, setShowForm}) => {
   console.log(`DrawTrail Coordinates: ${JSON.stringify(drawTrail)}`);
   const [name, setName] = useState('');
-  const [date, setDate] = useState('');
+  const [dateTime, setDateTime] = useState('');
   const [phone, setPhone] = useState('');
   const [notes, setNotes] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const trailData = {
       timestamp: Date.now(),
       name,
-      date,
+      dateTime,
       phone,
       path: drawTrail,
+      password,
       notes
     };
     onSave(trailData);
     setIsDrawingMode(false);
+    setDrawTrail([]);
   };
+
+  const handleCancel = () => {
+    setIsDrawingMode(false);
+    setDrawTrail([]);
+    setShowForm(false); // Hide the form when canceling
+  };
+
 
   return (
     <div className="trail-form-popup">
@@ -29,18 +39,23 @@ const TrailForm = ({ drawTrail, onSave, setIsDrawingMode}) => {
           <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
         </label>
         <label className='form-field'>
-          Date:
-          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
+          Date and Time:
+          <input type="datetime-local" value={dateTime} onChange={(e) => setDateTime(e.target.value)} required />
         </label>
         <label className='form-field'>
           Contact Phone (will not be displayed):
           <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required />
         </label>
         <label className='form-field'>
+          password:
+          <input type="tel" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        </label>
+        <label className='form-field'>
           Notes:
           <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
         </label>
-        <button type="submit">Save</button>
+        <button className='form-btn' type="button" onClick={handleCancel}>Cancel</button>
+        <button className='form-btn' type="submit">Save</button>
       </form>
     </div>
   );

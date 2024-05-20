@@ -40,6 +40,7 @@
   border: none;
   border-radius: 1rem;
   font-weight: bold;
+  filter: drop-shadow(0 0.75rem 1rem rgba(16, 34, 26, 0.4));
 }
 
 .btn-form-popup{
@@ -95,6 +96,12 @@
   padding: 1rem;
 }
 
+.form-btn{
+  margin: 0 0.25rem 1rem 0.25rem;
+  font-size: 0.75rem;
+  padding: 0.25rem 1.25rem;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -104,3 +111,7 @@
   }
 }
 
+#sign-in{
+  width: 15rem;
+  height: 4rem;
+}
