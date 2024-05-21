@@ -47,12 +47,12 @@ const TrailForm = ({ drawTrail, onSave, setIsDrawingMode, setDrawTrail, setShowF
           <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required />
         </label>
         <label className='form-field'>
-          password:
-          <input type="tel" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        </label>
-        <label className='form-field'>
           Notes:
           <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
+        </label>
+        <label className='form-field'>
+          Passcode:
+          <input type="tel" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </label>
         <button className='form-btn' type="button" onClick={handleCancel}>Cancel</button>
         <button className='form-btn' type="submit">Save</button>

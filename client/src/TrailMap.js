@@ -51,8 +51,6 @@ const TrailMap = ({ map, trails, isDrawingMode, setIsDrawingMode}) => {
     // Draw initial trails
     trails.forEach(trail => {
       const geoPoints = trail.path.map(geoPoint => [geoPoint.longitude, geoPoint.latitude]);
-      
-        console.log('geoPoints:', geoPoints);
         // Add trail path as a line
         const line = {
           'type': 'Feature',
@@ -62,7 +60,6 @@ const TrailMap = ({ map, trails, isDrawingMode, setIsDrawingMode}) => {
             'coordinates': geoPoints
           }
         };
-        console.log('Fetched trail.id:', trail.id);
         map.addSource(`route-${trail.id}`, {
           'type': 'geojson',
           'data': line
@@ -77,7 +74,7 @@ const TrailMap = ({ map, trails, isDrawingMode, setIsDrawingMode}) => {
             'line-cap': 'round'
           },
           'paint': {
-            'line-color': '#4F96E6',
+            'line-color': '#FF5F1F',
             'line-width': 5
           }
         });
