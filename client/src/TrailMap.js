@@ -8,6 +8,7 @@ import { collection, addDoc } from 'firebase/firestore';
 const TrailMap = ({ map, trails, isDrawingMode, setIsDrawingMode}) => {
   const [drawTrail, setDrawTrail] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [history, setHistory] = useState([]); // History stack to keep track of previous states
 
   useEffect(() => {
     if (!map || trails.length === 0) return;
@@ -23,11 +24,12 @@ const TrailMap = ({ map, trails, isDrawingMode, setIsDrawingMode}) => {
     });
 
     const handleClick = (e) => {
-      if (!isDrawingMode) return
+      if (!isDrawingMode) return;
 
       const coords = [e.lngLat.lng, e.lngLat.lat];
       console.log(coords)
       setDrawTrail(prevDrawTrail => {
+        setHistory([...history, prevDrawTrail]); // Push the current state to the history stack
         const updatedTrail = [...prevDrawTrail, coords];
         console.log(`DrawTrail Coordinates: ${JSON.stringify(updatedTrail)}`);
         drawLine(map, updatedTrail); // Draw the updated line
@@ -43,7 +45,7 @@ const TrailMap = ({ map, trails, isDrawingMode, setIsDrawingMode}) => {
       map.off('click', handleClick);
     };
 
-  }, [map, trails, isDrawingMode]);
+  }, [map, trails, isDrawingMode, history]);
 
   useEffect(() => {
     if (!map) return;
@@ -81,7 +83,6 @@ const TrailMap = ({ map, trails, isDrawingMode, setIsDrawingMode}) => {
       });
         
   }, [map, trails]); // Add map and trails as dependencies
-
 
   const drawLine = (map, coordinates) => {
     // Remove existing draw line if it exists
@@ -134,6 +135,7 @@ const TrailMap = ({ map, trails, isDrawingMode, setIsDrawingMode}) => {
       });
       console.log('Trail data successfully saved to Firestore!');
       setDrawTrail([]); // Clear the draw trail
+      setHistory([]); // Clear the history
     } catch (error) {
       console.error('Error saving trail data to Firestore:', error);
     }
@@ -141,12 +143,29 @@ const TrailMap = ({ map, trails, isDrawingMode, setIsDrawingMode}) => {
     setIsDrawingMode(false); // Reset drawing mode
   };
 
+  const handleUndo = () => {
+    setHistory(prevHistory => {
+      const previousTrail = prevHistory.pop();
+      setDrawTrail(previousTrail || []);
+      drawLine(map, previousTrail || []);
+      return prevHistory;
+    });
+  };
+
   return (
     <div>
       {isDrawingMode && (
-        <button className='btn-form-popup' onClick={() => setShowForm(true)}>
+       <div className='btn-form-popup-wrapper'>
+        <button className='btn-form-option' onClick={() => { setShowForm(false); setIsDrawingMode(false); }}>
+          Cancel
+        </button>
+        <button className='btn-form-option' onClick={handleUndo}>
+          Undo
+        </button>
+        <button className='btn-form-submit' onClick={() => setShowForm(true)}>
           Save This Path
         </button>
+      </div>
       )}
       {showForm && <TrailForm drawTrail={drawTrail} onSave={handleSave} setIsDrawingMode={setIsDrawingMode} setDrawTrail={setDrawTrail} setShowForm={setShowForm}/>}
     </div>

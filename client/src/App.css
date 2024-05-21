@@ -59,18 +59,38 @@
   filter: drop-shadow(0 0 .5rem rgba(16, 34, 26, 0.2));
 }
 
-.btn-form-popup{
-  width: 95vw;
-  height: 4rem;
-  position: absolute;
+.btn-form-submit{
+  width: 45vw;
+  height: 3.2rem;
   font-size: 0.9rem;
   right: 0.8rem;
-  bottom: 2rem;
+  bottom: 2.1rem;
   background-color: #2e79a0;
   color: white;
   border: none;
-  border-radius: 1rem;
+  border-radius: 0.75rem;
   font-weight: bold;
+  margin: 0 0.5rem;
+}
+
+.btn-form-option{
+  width: 20vw;
+  height: 3.2rem;
+  font-size: 0.9rem;
+  right: 0.8rem;
+  bottom: 2.1rem;
+  background-color: #ffffff;
+  color: #333;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: bold;
+  margin: 0 0.25rem;
+}
+
+.btn-form-popup-wrapper{
+  width: 100vw;
+  position: absolute;
+  bottom: 2rem;
 }
 
 .trail-form-popup form label {
