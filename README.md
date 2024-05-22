@@ -75,6 +75,41 @@ To enable the Firestore functionality, follow these steps:
       - timestamp: 1716315267247 (number)
 ![image](imgs/trails-snapshot.png)
 
+## Deploy the app
+Since we use Firestore as the backend, we directly use Firebase to host the service. Follow these steps:
+
+1. **Install Firebase CLI**:
+    ```sh
+    npm install -g firebase-tools
+    ```
+
+2. **Login to Firebase**:
+    ```sh
+    firebase login
+    ```
+
+3. **Initialize Firebase in your project**:
+    ```sh
+    firebase init
+    ```
+    - Select `Hosting` and press Enter.
+    - Select the Firebase project you created for this app.
+    - Choose `dist` as the public directory.
+    - Configure as a single-page app by typing `y`.
+    - Do not overwrite `index.html` when asked.
+
+4. **Build the project**:
+    ```sh
+    npm run build
+    ```
+
+5. **Deploy to Firebase**:
+    ```sh
+    firebase deploy
+    ```
+
+After these steps, your app should be live and accessible via the Firebase hosting URL provided after deployment.
+
 ## Contributing
 Contributions are welcome! If you have suggestions for improvements or new features, please feel free to submit a pull request or open an issue.
 
