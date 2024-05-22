@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 const TrailForm = ({ drawTrail, onSave, setIsDrawingMode, setDrawTrail, setShowForm}) => {
-  console.log(`DrawTrail Coordinates: ${JSON.stringify(drawTrail)}`);
   const [name, setName] = useState('');
   const [dateTime, setDateTime] = useState('');
   const [phone, setPhone] = useState('');

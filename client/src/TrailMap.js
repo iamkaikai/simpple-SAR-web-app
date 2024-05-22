@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
 import './TrailMap.css';
 import TrailForm from './TrailForm';
 import { firestore, GeoPoint } from './firebase'; // Import Firestore
@@ -31,7 +30,6 @@ const TrailMap = ({ map, trails, isDrawingMode, setIsDrawingMode}) => {
       setDrawTrail(prevDrawTrail => {
         setHistory([...history, prevDrawTrail]); // Push the current state to the history stack
         const updatedTrail = [...prevDrawTrail, coords];
-        console.log(`DrawTrail Coordinates: ${JSON.stringify(updatedTrail)}`);
         drawLine(map, updatedTrail); // Draw the updated line
         return updatedTrail;
       });
@@ -82,7 +80,7 @@ const TrailMap = ({ map, trails, isDrawingMode, setIsDrawingMode}) => {
         });
       });
         
-  }, [map, trails]); // Add map and trails as dependencies
+  }, [map, trails, isDrawingMode]); // Add map and trails as dependencies
 
   const drawLine = (map, coordinates) => {
     // Remove existing draw line if it exists
@@ -123,6 +121,15 @@ const TrailMap = ({ map, trails, isDrawingMode, setIsDrawingMode}) => {
     });
   };
 
+  const removeDrawLine = () => {
+    if (map.getLayer('draw-line')) {
+      map.removeLayer('draw-line');
+    }
+    if (map.getSource('draw-line')) {
+      map.removeSource('draw-line');
+    }
+  };
+
   const handleSave = async(trailData) => {
     console.log('Saved trail data:', trailData);
     // Save trail data to JSON file or server here
@@ -156,7 +163,13 @@ const TrailMap = ({ map, trails, isDrawingMode, setIsDrawingMode}) => {
     <div>
       {isDrawingMode && (
        <div className='btn-form-popup-wrapper'>
-        <button className='btn-form-option' onClick={() => { setShowForm(false); setIsDrawingMode(false); }}>
+        <button className='btn-form-option' onClick={() => { 
+          setShowForm(false); 
+          setIsDrawingMode(false); 
+          setHistory([]); 
+          setDrawTrail([]);
+          removeDrawLine(); // Remove the drawn line when cancel is clicked
+        }}>
           Cancel
         </button>
         <button className='btn-form-option' onClick={handleUndo}>
