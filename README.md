@@ -79,6 +79,7 @@ Since we use Firestore as the backend, we directly use Firebase to host the serv
 
 1. **Install Firebase CLI**:
     ```sh
+    npm install firebase
     npm install -g firebase-tools
     ```
 
@@ -91,14 +92,16 @@ Since we use Firestore as the backend, we directly use Firebase to host the serv
     ```sh
     firebase init
     ```
-    - Select `Hosting` and press Enter.
+    - "Which Firebase features do you want to set up for this directory?". Use the arrow down key and space to select "Hosting:Configure files for Firebase Hosting and (optionally) set up GitHub Action deploys"
     - Select the Firebase project you created for this app.
-    - Choose `dist` as the public directory.
-    - Configure as a single-page app by typing `y`.
-    - Do not overwrite `index.html` when asked.
+    - "What do you want to use as your public directory?", type in "build".
+    - "Configure as a single-page app (rewrite all urls to /index.html)", type "Y" or "Yes"
+    - Optional: You can set up Automatic Build whenever there is new push on Github. To do so, for "Set up automatic builds and deploys with GitHub?", type "Yes". There will be some extra steps required to set up the Github Repo. Else, type "No".
+    - "File build/index.html already exists. Overwrite?", type "No".
 
 4. **Build the project**:
     ```sh
+    cd client 
     npm run build
     ```
 
