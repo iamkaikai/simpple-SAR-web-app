@@ -1,8 +1,7 @@
 # Simple Missing Persons Search App
-![image](imgs/main.png)
+This web app is designed to assist in the search for missing persons by recording all the trails and search efforts on both Desktop and Mobile. The goal is to quickly set up an app using free services from Mapbox and Firebase for free-tier API access.
 
-## Overview
-This web app is designed to assist in the search for missing persons by recording all the trails and search efforts on both Desktop and Mobile.
+![image](imgs/main.png)
 
 ## Features
 - **Trail Recording**: Keep track of all the trails and areas that have been searched.
